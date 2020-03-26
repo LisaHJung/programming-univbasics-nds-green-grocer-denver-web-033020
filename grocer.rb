@@ -1,5 +1,84 @@
 require "pry"
 require "pp"
+
+def find_item_by_name_in_collection(string, array)
+ item_index =0 
+ while item_index < array.length 
+  if array[item_index][:item] == string
+    return array[item_index]
+  end
+  item_index+=1 
+end
+end
+
+def consolidate_cart(cart)
+  new_cart =[]
+  item_index = 0 
+  while item_index < cart.length do
+    new_cart_item = find_item_by_name_in_collection(cart[item_index][:item], new_cart)
+    if new_cart_item != nil
+      new_cart_item[:count]+=1
+    else 
+      new_cart_item ={
+        :item => cart[item_index][:item],
+        :price => cart[item_index][:price],
+        :clearance => cart[item_index][:clearance],
+        :count => 1
+      }
+      new_cart << new_cart_item
+    end
+    item_index+=1 
+  end
+  new_cart
+end
+
+def apply_coupons(items_in_cart, coupon)
+  item_index = 0
+  while item_index < coupon.length do
+    item_checked_coupon =find_item_by_name_in_collection(coupon[item_index][:item], items_in_cart)
+    binding.pry
+    if item_checked_coupon != nil && items_in_cart[item_index][:count]>= coupon[item_index][:num]
+      binding.pry
+      couponed_item ={
+        :item => "#{items_in_cart[item_index][:item]} W/COUPON",
+        :price =>coupon[item_index][:cost] /= coupon[item_index][:num],
+        :clearance => items_in_cart[item_index][:clearance],
+        :count => coupon[item_index][:num]
+      }
+      couponed_item_excess ={
+        :item =>items_in_cart[item_index][:item],
+        :price => items_in_cart[item_index][:price],
+        :clearance => items_in_cart[item_index][:clearance],
+        :count => items_in_cart[item_index][:count] - coupon[item_index][:num]
+      }
+      items_in_cart << couponed_item
+      items_in_cart << couponed_item_excess
+    end
+  item_index+=1
+end
+items_in_cart
+end
+
+def apply_clearance (items_in_cart)
+  cart_post_clearance =[]
+  item_index =0 
+  while item_index< items_in_cart.length
+    if items_in_cart[item_index][:clearance] == true
+      item_post_clearance = {
+        :item => items_in_cart[item_index][:item],
+        :price => items_in_cart[item_index][:price]* 0.8,
+        :clearance => items_in_cart[item_index][:clearance],
+        :count => items_in_cart[item_index][:count]
+       }
+      cart_post_clearance << item_post_clearance
+    else
+      cart_post_clearance << items_in_cart[item_index]
+    end
+  item_index +=1
+  end
+ cart_post_clearance 
+end
+=begin
 def find_item_by_name_in_collection(name, collection)
   hash_index=0
   while hash_index<collection.length do
@@ -85,6 +164,8 @@ end
   end
   total
 end
+
+=end
 
 # Consult README for inputs and outputs
   #
