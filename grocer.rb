@@ -36,9 +36,9 @@ def apply_coupons(items_in_cart, coupon)
   item_index = 0
   while item_index < coupon.length do
     item_checked_coupon =find_item_by_name_in_collection(coupon[item_index][:item], items_in_cart)
-    binding.pry
+    #binding.pry
     if item_checked_coupon != nil && items_in_cart[item_index][:count]>= coupon[item_index][:num]
-      binding.pry
+      #binding.pry
       couponed_item ={
         :item => "#{items_in_cart[item_index][:item]} W/COUPON",
         :price =>coupon[item_index][:cost] /= coupon[item_index][:num],
