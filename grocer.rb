@@ -51,6 +51,9 @@ def apply_coupons(items_in_cart, coupon)
         :clearance => items_in_cart[item_index][:clearance],
         :count => items_in_cart[item_index][:count] - coupon[item_index][:num]
       }
+      
+    else 
+      
       items_in_cart << couponed_item
       items_in_cart << couponed_item_excess
     end
